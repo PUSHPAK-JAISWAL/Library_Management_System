@@ -55,87 +55,102 @@ export function LoginPage({ setCurrentUser }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="text-center bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-t-lg">
-          <CardTitle className="text-3xl">Library Management</CardTitle>
-          <CardDescription className="text-blue-100">Manage your library efficiently</CardDescription>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-2xl border-slate-700 bg-slate-800">
+        <CardHeader className="text-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-t-lg">
+          <CardTitle className="text-3xl font-bold">Library Management</CardTitle>
+          <CardDescription className="text-purple-100">Manage your library efficiently</CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-slate-700">
+              <TabsTrigger
+                value="login"
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-slate-300"
+              >
+                Login
+              </TabsTrigger>
+              <TabsTrigger
+                value="signup"
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white text-slate-300"
+              >
+                Sign Up
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="login" className="space-y-4">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-foreground">Email</label>
+                  <label className="text-sm font-medium text-slate-200">Email</label>
                   <Input
                     type="email"
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Password</label>
+                  <label className="text-sm font-medium text-slate-200">Password</label>
                   <Input
                     type="password"
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
-                <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600">
+                {error && <p className="text-sm text-red-400">{error}</p>}
+                <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold">
                   Login
                 </Button>
               </form>
 
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-xs font-semibold text-blue-900 mb-2">Admin Access:</p>
-                <p className="text-xs text-blue-700">Contact your administrator for admin credentials</p>
+              <div className="mt-6 p-4 bg-slate-700 rounded-lg border border-slate-600">
+                <p className="text-xs font-semibold text-purple-300 mb-2">Admin Access:</p>
+                <p className="text-xs text-slate-300">Contact your administrator for admin credentials</p>
               </div>
             </TabsContent>
 
             <TabsContent value="signup" className="space-y-4">
               <form onSubmit={handleSignup} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-foreground">Full Name</label>
+                  <label className="text-sm font-medium text-slate-200">Full Name</label>
                   <Input
                     type="text"
                     placeholder="John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
+                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Email</label>
+                  <label className="text-sm font-medium text-slate-200">Email</label>
                   <Input
                     type="email"
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground">Password</label>
+                  <label className="text-sm font-medium text-slate-200">Password</label>
                   <Input
                     type="password"
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                   />
                 </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
-                <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600">
+                {error && <p className="text-sm text-red-400">{error}</p>}
+                <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold">
                   Create Account
                 </Button>
               </form>

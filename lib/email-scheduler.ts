@@ -1,9 +1,11 @@
+import { sendEmailViaResend } from "@/app/actions/email-config"
+
 interface ScheduledEmail {
   id: string
   to: string
   subject: string
   message: string
-  type: "issue" | "reminder" | "due" | "return"
+  type: "issue" | "reminder" | "due" | "return" | "booking" | "reissue"
   scheduledFor: string
   sent: boolean
   sentAt?: string
@@ -12,10 +14,9 @@ interface ScheduledEmail {
 class EmailScheduler {
   private emails: ScheduledEmail[] = []
   private intervals: Map<string, NodeJS.Timeout> = new Map()
-  private gmailConfig: { apiKey?: string; senderEmail?: string } = {}
 
-  setGmailConfig(apiKey: string, senderEmail: string) {
-    this.gmailConfig = { apiKey, senderEmail }
+  constructor() {
+    console.log(`[EMAIL] Email scheduler initialized (SMTP Mode - Real emails via Gmail)`)
   }
 
   scheduleEmail(email: ScheduledEmail) {
@@ -41,37 +42,29 @@ class EmailScheduler {
     this.intervals.set(emailId, checkInterval)
   }
 
-  private sendEmail(emailId: string) {
+  private async sendEmail(emailId: string) {
     const email = this.emails.find((e) => e.id === emailId)
     if (!email) return
 
     email.sent = true
     email.sentAt = new Date().toISOString()
 
-    if (this.gmailConfig.apiKey) {
-      this.sendViaGmail(email)
-    } else {
-      this.logEmailLocally(email)
+    try {
+      const result = await sendEmailViaResend(email.to, email.subject, email.message, email.type)
+
+      if (result.success) {
+        console.log(`[EMAIL SENT] To: ${email.to}, Subject: ${email.subject}`)
+      } else {
+        console.log(`[EMAIL ERROR] Failed to send email to ${email.to}: ${result.error}`)
+      }
+    } catch (error) {
+      console.log(`[EMAIL ERROR] Error sending email to ${email.to}:`, error)
     }
 
     // Store sent emails in localStorage
     const sentEmails = JSON.parse(localStorage.getItem("sentEmails") || "[]")
     sentEmails.push(email)
     localStorage.setItem("sentEmails", JSON.stringify(sentEmails))
-  }
-
-  private sendViaGmail(email: ScheduledEmail) {
-    // Gmail API integration - user will configure their own API key
-    console.log(`[GMAIL SENDING] To: ${email.to}`)
-    console.log(`Subject: ${email.subject}`)
-    console.log(`Message: ${email.message}`)
-    // In production, this would call Gmail API with the configured API key
-  }
-
-  private logEmailLocally(email: ScheduledEmail) {
-    console.log(`[EMAIL SCHEDULED] To: ${email.to}`)
-    console.log(`Subject: ${email.subject}`)
-    console.log(`Message: ${email.message}`)
   }
 
   getScheduledEmails() {
